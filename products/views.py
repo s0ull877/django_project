@@ -4,6 +4,8 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 
+from django.core.cache import cache
+
 from common.views import TitleMixin
 from products.models import Basket, Product, ProductCategory
 from users.models import User
@@ -42,7 +44,14 @@ class ProductsListViews(TitleMixin,ListView):
     def get_context_data(self, **kwargs) -> dict:
         
         context = super().get_context_data()
-        context['categories'] = ProductCategory.objects.all() 
+        categories = cache.get('categories')
+
+        if not categories:
+
+            context['categories'] = ProductCategory.objects.all() 
+            cache.set('categories',  context['categories'], 30)
+        else:
+            context['categories'] = categories
 
         return context
     
