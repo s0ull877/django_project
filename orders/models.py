@@ -21,6 +21,7 @@ class Order(models.Model):
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=254)
     address = models.CharField(max_length=254)
+    price = models.DecimalField(max_digits=11, decimal_places=2, default=1)
 
     basket_history = models.JSONField(default=dict)
     create = models.DateTimeField(auto_now_add=True)

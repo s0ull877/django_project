@@ -4,6 +4,12 @@ from orders.models import Order
 
 
 class OrderForm(forms.ModelForm):
+
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Иван'}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Иванов'}))
+    email = forms.CharField(widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'youremail@example.com'}))
+    address = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control', 'placeholder': 'Россия, Москва, ул. Мира, дом 6'}))
     
     class Meta:
         model = Order
