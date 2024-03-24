@@ -19,6 +19,8 @@ from django.contrib import admin
 from django.urls import include, path
 
 from products.views import IndexView
+from orders.views import yookassa_webhook_view
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +29,7 @@ urlpatterns = [
     path('users/', include('users.urls', namespace='users')),
     path('orders/', include('orders.urls', namespace='orders')),
     path('accounts/', include('allauth.urls')),
+    path('webhook/yookassa/', yookassa_webhook_view, name='yookassa_webhook'),
 ]
 
 if settings.DEBUG:
