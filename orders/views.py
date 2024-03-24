@@ -6,9 +6,13 @@ from yookassa import Payment
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.http import HttpResponse
+
 from django.views.generic.edit import CreateView 
 from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
+
 from django.views.decorators.csrf import csrf_exempt
+
 from django.shortcuts import HttpResponseRedirect,reverse
 
 from products.context_processors import baskets
@@ -61,6 +65,19 @@ class OrderCreateViews(TitleMixin, CreateView):
         return super().form_valid(form)
     
 
+class OrderListView(TitleMixin,ListView):
+    model = Order
+    title = 'Store - Заказы'
+    template_name = "orders/orders.html"
+    queryset = Order.objects.all()
+    ordering = ('-id')
+
+
+    def get_queryset(self):
+        
+        queryset = super().get_queryset()
+        return queryset.filter(initiator=self.request.user)
+
 
 @csrf_exempt
 def yookassa_webhook_view(request):
@@ -70,7 +87,6 @@ def yookassa_webhook_view(request):
     # status = payload_dict['object']['status']
 
     order_id = int(payload_dict['object']['metadata']['order_id'])
-
     try:
         
         order = Order.objects.get(id=order_id)
@@ -81,6 +97,6 @@ def yookassa_webhook_view(request):
     except Order.DoesNotExist:
         pass
 
-
-
     return HttpResponse(status=200)
+
+
