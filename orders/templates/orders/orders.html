@@ -27,7 +27,7 @@
                                 <td>{{ order.create| naturaltime }}</td>
                                 <td>{{ order.price| intcomma }} руб.</td>
                                 <td>
-                                    <a href="order.html">просмотреть</a>
+                                    <a href="{% url "orders:order_list" order.id %}">просмотреть</a>
                                 </td>
                             </tr>
                         {% endfor %}

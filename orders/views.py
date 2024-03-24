@@ -9,6 +9,8 @@ from django.http import HttpResponse
 
 from django.views.generic.edit import CreateView 
 from django.views.generic.base import TemplateView
+from django.views.generic.detail import DetailView
+
 from django.views.generic.list import ListView
 
 from django.views.decorators.csrf import csrf_exempt
@@ -65,7 +67,7 @@ class OrderCreateViews(TitleMixin, CreateView):
         return super().form_valid(form)
     
 
-class OrderListView(TitleMixin,ListView):
+class OrdersListView(TitleMixin,ListView):
     model = Order
     title = 'Store - Заказы'
     template_name = "orders/orders.html"
@@ -77,6 +79,47 @@ class OrderListView(TitleMixin,ListView):
         
         queryset = super().get_queryset()
         return queryset.filter(initiator=self.request.user)
+
+
+class OrderListView(TitleMixin,ListView):
+
+    model = Order
+    title = f'Store - Заказ'
+    template_name = "orders/order.html"
+    queryset = Order.objects.all()
+    ordering = ('-id')
+
+    def get_context_data(self, **kwargs) -> dict:
+        
+        context = super().get_context_data()
+        order_id = self.kwargs.get('order_id')
+
+        try:
+            context['order'] = Order.objects.filter(initiator=self.request.user, id=order_id)[0]
+        except IndexError:
+            answer = {'pass': True, 'id': order_id}
+            context['order'] = answer
+
+        return context
+
+
+class OrderDetailView(TitleMixin,DetailView):
+
+    model = Order
+    template_name = "orders/order.html"
+    title = f'Store - Заказ'
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        context['pass'] = False
+        
+        if self.request.user == context['order'].initiator:
+            context['pass'] = True
+
+        return context
+
+    
 
 
 @csrf_exempt
