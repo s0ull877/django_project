@@ -1,7 +1,7 @@
 import json
 import uuid
 
-from yookassa import Payment
+from yookassa import Payment,Configuration
 
 from django.conf import settings
 from django.urls import reverse_lazy
@@ -24,7 +24,10 @@ from orders.models import Order
 
 from common.views import TitleMixin
 
-from orders.forms import OrderForm                                                              
+from orders.forms import OrderForm    
+
+Configuration.account_id = settings.YOKASSA_ACC_ID
+Configuration.secret_key = settings.YOKASSA_SECRET
 
 class OrderSuccess(TitleMixin,TemplateView):
     template_name = "orders\success.html"
