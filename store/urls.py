@@ -18,6 +18,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+from rest_framework.authtoken.views import obtain_auth_token
+
 from products.views import IndexView
 from orders.views import yookassa_webhook_view
 
@@ -28,8 +30,10 @@ urlpatterns = [
     path('products/', include('products.urls', namespace='products')),
     path('users/', include('users.urls', namespace='users')),
     path('orders/', include('orders.urls', namespace='orders')),
+    path('api/', include('api.urls', namespace='api')),
     path('accounts/', include('allauth.urls')),
     path('webhook/yookassa/', yookassa_webhook_view, name='yookassa_webhook'),
+    path('api-token-auth/', obtain_auth_token),
 ]
 
 if settings.DEBUG:

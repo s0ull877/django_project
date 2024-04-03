@@ -79,11 +79,14 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
 
     'debug_toolbar',
-    'django_extensions',    
+    'django_extensions', 
+    'rest_framework',
+    'rest_framework.authtoken',
 
     'products',
     'orders',
     'users',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -254,7 +257,17 @@ CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}'
 YOKASSA_SECRET = env('YOKASSA_SECRET')
 YOKASSA_ACC_ID = env('YOKASSA_ACC_ID')
 
+# REST
+REST_FRAMEWORK = {
 
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 3,
+
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
 
 
