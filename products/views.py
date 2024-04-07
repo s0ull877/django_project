@@ -13,7 +13,7 @@ from users.models import User
 
 class IndexView(TitleMixin, TemplateView):
 
-    template_name=r'products\index.html'
+    template_name=r'products/index.html'
     title = 'Store'
 
     # context creating func
@@ -28,7 +28,7 @@ class IndexView(TitleMixin, TemplateView):
 class ProductsListViews(TitleMixin,ListView):
 
     model = Product
-    template_name=r'products\products.html'
+    template_name=r'products/products.html'
     paginate_by = 3
     title='Store - Каталог'
     
@@ -59,7 +59,16 @@ class ProductsListViews(TitleMixin,ListView):
 @login_required
 def basket_add(request, product_id):
     
-    Basket.create_or_update(product_id, request.user)
+    product = Product.objects.get(id=product_id)
+    baskets = Basket.objects.filter(user=request.user, product=product)
+    user = request.user
+
+    if not baskets.exists():
+        Basket.objects.create(user=user, product=product, quantity=1)
+    else:
+        basket = baskets.first()
+        basket.quantity += 1
+        basket.save()
 
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 

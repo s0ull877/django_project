@@ -16,9 +16,9 @@ class UserRegistrationView(TitleMixin, SuccessMessageMixin, CreateView):
     
     model = User
     form_class = UserRegistrationForm
-    template_name=r'users\register.html'
+    template_name=r'users/register.html'
     success_url = reverse_lazy('users:login')
-    success_message = 'Вы успешно зарегистрированы'
+    success_message = 'Для окончания регистрации, перейдите по ссылке, отправленной вам на почту!'
     title = 'Store - Авторизация'
 
 
@@ -27,7 +27,7 @@ class UserProfileView(TitleMixin, UpdateView):
 
     model = User
     form_class = UserProfileForm
-    template_name=r'users\profile.html'
+    template_name=r'users/profile.html'
     title = 'Store - Личный кабинет'
 
 
@@ -39,7 +39,7 @@ class UserProfileView(TitleMixin, UpdateView):
 
 class UserLoginView(TitleMixin, LoginView):
    
-    template_name=r'users\login.html'
+    template_name=r'users/login.html'
     form_class = UserLoginForm
     title = 'Store - Регистрация'
 
@@ -48,7 +48,7 @@ class UserLoginView(TitleMixin, LoginView):
 class EmailVerificationView(TitleMixin,TemplateView):
     
     title = 'Store - Подтверждение электронной почты'
-    template_name = r'users\email_verification.html'
+    template_name = r'users/email_verification.html'
 
 
     def get(self, request, *args, **kwargs):

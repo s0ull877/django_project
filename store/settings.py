@@ -36,7 +36,6 @@ env = environ.Env(
     EMAIL_HOST_PASSWORD=(str),
     EMAIL_USE_SSL=(bool),
 
-
     YOKASSA_SECRET=(str),
     YOKASSA_ACC_ID=(int),
     
@@ -79,14 +78,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
 
     'debug_toolbar',
-    'django_extensions', 
-    'rest_framework',
-    'rest_framework.authtoken',
+    'django_extensions',    
 
     'products',
     'orders',
     'users',
-    'api',
 ]
 
 MIDDLEWARE = [
@@ -197,9 +193,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    BASE_DIR / 'static',
-)
+if DEBUG:
+   STATICFILES_DIRS = (
+       BASE_DIR / 'static',
+   )
+else:
+    STATIC_ROOT = BASE_DIR / 'static'
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -219,17 +219,17 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 #Email
-# if DEBUG:
-#      EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# else:
-EMAIL_HOST =env('EMAIL_HOST')
-EMAIL_PORT = env('EMAIL_PORT')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-EMAIL_USE_SSL = env('EMAIL_USE_SSL')
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-SERVER_EMAIL = EMAIL_HOST_USER
-EMAIL_ADMIN = EMAIL_HOST_USER
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_HOST =env('EMAIL_HOST')
+    EMAIL_PORT = env('EMAIL_PORT')
+    EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+    EMAIL_USE_SSL = env('EMAIL_USE_SSL')
+    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+    SERVER_EMAIL = EMAIL_HOST_USER
+    EMAIL_ADMIN = EMAIL_HOST_USER
 
 #OAuth
 AUTHENTICATION_BACKENDS = [
@@ -244,7 +244,6 @@ SOCIALACCOUNT_PROVIDERS = {
         'SCOPE': [
             'user',
             'email',
-            # 'read:org',
         ],
     }
 }
@@ -257,17 +256,7 @@ CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}'
 YOKASSA_SECRET = env('YOKASSA_SECRET')
 YOKASSA_ACC_ID = env('YOKASSA_ACC_ID')
 
-# REST
-REST_FRAMEWORK = {
 
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 3,
-
-
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ]
-}
 
 
 

@@ -1,0 +1,48 @@
+
+server {
+
+    server_name your_domain www.your_domain;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /path/to/store;
+    }
+
+    location /media/ {
+    root /path/to/store;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/path/to/store/store.sock;
+    }
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/store-radmir.ru/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/your_domain/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+    add_header Strict-Transport-Security 'max-age=31536000';
+}
+
+
+server {
+    if ($host = www.your_domain) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    if ($host = your_domain) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    server_name your_domain www.your_domain;
+    listen 80;
+    return 404; # managed by Certbot
+
+
+}

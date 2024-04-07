@@ -30,13 +30,13 @@ Configuration.account_id = settings.YOKASSA_ACC_ID
 Configuration.secret_key = settings.YOKASSA_SECRET
 
 class OrderSuccess(TitleMixin,TemplateView):
-    template_name = "orders\success.html"
+    template_name = "orders/success.html"
     title = 'Store - Спасибо за заказ'
 
 
 class OrderCreateViews(TitleMixin, CreateView):
 
-    template_name = 'orders\order-create.html'
+    template_name = 'orders/order-create.html'
     title = 'Store - Оформление заказа'
     form_class = OrderForm
     success_url = reverse_lazy('orders:order_create')

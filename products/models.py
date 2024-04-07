@@ -28,7 +28,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
     quantity = models.PositiveIntegerField(default=0)
-    image = models.ImageField(upload_to='products_images', null=True, blank=True )
+    image = models.ImageField(upload_to='products_images')
     category = models.ForeignKey(to=ProductCategory, on_delete=models.CASCADE)
 
 
@@ -84,22 +84,3 @@ class Basket(models.Model):
         }
 
         return basket_item
-
-    @classmethod
-    def create_or_update(cls, product_id, user):
-    
-        baskets = Basket.objects.filter(user=user, product_id=product_id)
-
-        if not baskets.exists():
-
-            obj = Basket.objects.create(user=user, product_id=product_id, quantity=1)
-            is_created = True
-            return obj, is_created
-        
-        else:
-
-            basket = baskets.first()
-            basket.quantity += 1
-            basket.save()
-            is_created = False
-            return basket, is_created

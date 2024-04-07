@@ -1,0 +1,12 @@
+[Unit]
+Description=Celery Service
+After=network.target
+
+[Service]
+User=USER
+Group=GROUP
+WorkingDirectory=/path/to/store
+ExecStart=/path/to/venv/bin/celery -A store worker -l INFO
+
+[Install]
+WantedBy=multi-user.target
