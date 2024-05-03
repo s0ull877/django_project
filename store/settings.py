@@ -10,31 +10,26 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 '''
 import os
-import environ
 
 from pathlib import Path
 
 
-env = environ.Env(  
-)
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-environ.Env.read_env(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.str('DEBUG', default=True)
+DEBUG = os.getenv('DEBUG', default=True)
 
 ALLOWED_HOSTS = ['*']
 
-DOMAIN_NAME = env.str('DOMAIN_NAME', default='localhost')
+DOMAIN_NAME = os.getenv('DOMAIN_NAME', default='localhost')
 
 
 # Application definition
@@ -108,18 +103,18 @@ INTERNAL_IPS = [
 
 DATABASES = {
     'default': {
-        'ENGINE': env.str('DB_ENGINE',default='django.db.backends.sqlite3'),
-        'NAME': env.str('DATABASE_NAME', default=os.path.join(BASE_DIR, 'db.sqlite3')),
-        'USER': env.str('DATABASE_USER'),
-        'PASSWORD': env.str('DATABASE_PASSWORD'),
-        'HOST': env.str('DATABASE_HOST'),
-        'PORT': env.str('DATABASE_PORT'),
+        'ENGINE': os.getenv('DB_ENGINE',default='django.db.backends.sqlite3'),
+        'NAME': os.getenv('DATABASE_NAME', default=os.path.join(BASE_DIR, 'db.sqlite3')),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': os.getenv('DATABASE_PORT'),
     }
 }
 
 # Redis
-REDIS_HOST = env.str('REDIS_HOST')
-REDIS_PORT = env.str('REDIS_PORT')
+REDIS_HOST = os.getenv('REDIS_HOST')
+REDIS_PORT = os.getenv('REDIS_PORT')
 
 # caches
 
@@ -199,11 +194,11 @@ LOGOUT_REDIRECT_URL = '/'
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
-    EMAIL_HOST =env.str('EMAIL_HOST')
-    EMAIL_PORT = env.int('EMAIL_PORT')
-    EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
-    EMAIL_USE_SSL = env.bool('EMAIL_USE_SSL')
+    EMAIL_HOST =os.getenv('EMAIL_HOST')
+    EMAIL_PORT = os.getenv('EMAIL_PORT')
+    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+    EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL')
     DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
     SERVER_EMAIL = EMAIL_HOST_USER
     EMAIL_ADMIN = EMAIL_HOST_USER
@@ -230,8 +225,8 @@ CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}'
 CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}'
 
 # Yookassa
-YOKASSA_SECRET = env.str('YOKASSA_SECRET')
-YOKASSA_ACC_ID = env.str('YOKASSA_ACC_ID')
+YOKASSA_SECRET = os.getenv('YOKASSA_SECRET')
+YOKASSA_ACC_ID = os.getenv('YOKASSA_ACC_ID')
 
 
 
