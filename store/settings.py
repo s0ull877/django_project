@@ -104,11 +104,11 @@ INTERNAL_IPS = [
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE',default='django.db.backends.sqlite3'),
-        'NAME': os.getenv('DATABASE_NAME', default=os.path.join(BASE_DIR, 'db.sqlite3')),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST'),
-        'PORT': os.getenv('DATABASE_PORT'),
+        'NAME': os.getenv('DB_NAME', default=os.path.join(BASE_DIR, 'db.sqlite3')),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
@@ -165,12 +165,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-if DEBUG:
-   STATICFILES_DIRS = (
-       BASE_DIR / 'static',
-   )
-else:
-    STATIC_ROOT = BASE_DIR / 'static'
+#if DEBUG:
+#   STATICFILES_DIRS = (
+#       BASE_DIR / 'static',
+#   )
+#else:
+STATIC_ROOT = BASE_DIR / 'static'
 
 
 MEDIA_URL = '/media/'
@@ -227,12 +227,3 @@ CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}'
 # Yookassa
 YOKASSA_SECRET = os.getenv('YOKASSA_SECRET')
 YOKASSA_ACC_ID = os.getenv('YOKASSA_ACC_ID')
-
-
-
-
-
-
-
-# celery -A store worker -l info -P gevent
-# ngrok http http://127.0.0.1:8000
